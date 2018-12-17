@@ -36,6 +36,18 @@ global  $TITLE;
                 <a class="nav-link" href="<?php echo ROOT_URL  ?>/list">تاریخچه</a>
             </li>
 
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="reportsDropDown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    گزارشات
+                </a>
+                <div class="dropdown-menu" aria-labelledby="reportsDropDown">
+                    <a class="dropdown-item" href="<?php echo ROOT_URL  ?>/reports/daily">گزارش روزانه</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+
             <!--<li class="nav-item active">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>

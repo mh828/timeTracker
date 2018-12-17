@@ -1,3 +1,5 @@
+Options -Indexes
+DirectoryIndex router.php index.php
 RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} -f
