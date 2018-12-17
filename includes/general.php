@@ -41,9 +41,21 @@ function get_pdo($enforce_relation = true, $force_recreate = false)
  */
 function create_tables($pdo)
 {
+    //tables
     $pdo->exec("CREATE TABLE job (`job_id` INTEGER PRIMARY KEY ,`title` TEXT)");
     $pdo->exec("CREATE TABLE time_log (`start` NUMERIC ,`end` numeric, `job_id` integer," .
         " `duration` numeric,`description` TEXT, PRIMARY  KEY (`start`,`job_id`) )");
+
+
+    //views
+    $view = <<<eod
+CREATE VIEW job_times AS SELECT `job`.*,(SUM(end) - SUM(start)) as time
+  FROM `time_log`
+  LEFT JOIN `job` on `job`.`job_id` = `time_log`.`job_id`
+    GROUP BY `time_log`.`job_id` 
+eod;
+    $pdo->exec($view);
+
 }
 
 function calculate_time($start, $end, $return_array = false)
@@ -66,7 +78,8 @@ function calculate_time($start, $end, $return_array = false)
     }
 }
 
-function convert_seconds($seconds){
+function convert_seconds($seconds)
+{
 
     $hours = intval($seconds / 3600);
     $seconds = $seconds % 3600;
