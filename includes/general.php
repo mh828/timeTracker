@@ -49,7 +49,7 @@ function create_tables($pdo)
 
     //views
     $view = <<<eod
-CREATE VIEW job_times AS SELECT `job`.*,(SUM(end) - SUM(start)) as time
+CREATE VIEW view_job_times AS SELECT `job`.*,(SUM(end) - SUM(start)) as time
   FROM `time_log`
   LEFT JOIN `job` on `job`.`job_id` = `time_log`.`job_id`
     GROUP BY `time_log`.`job_id` 
