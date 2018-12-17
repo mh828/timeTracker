@@ -65,3 +65,13 @@ function calculate_time($start, $end, $return_array = false)
         return "{$hours}:{$minute}:{$seccond}";
     }
 }
+
+function convert_seconds($seconds){
+
+    $hours = intval($seconds / 3600);
+    $seconds = $seconds % 3600;
+    $minute = intval($seconds / 60);
+    $seconds = $seconds % 60;
+
+    return "{$hours}:{$minute}:{$seconds}";
+}
