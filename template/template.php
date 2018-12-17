@@ -29,11 +29,11 @@ global  $TITLE;
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="index">ثبت</a>
+                <a class="nav-link" href="<?php echo ROOT_URL  ?>/index">ثبت</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="list">تاریخچه</a>
+                <a class="nav-link" href="<?php echo ROOT_URL  ?>/list">تاریخچه</a>
             </li>
 
             <!--<li class="nav-item active">
