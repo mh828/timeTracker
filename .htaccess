@@ -1,0 +1,8 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} "\.(?!php)" [NC]
+RewriteRule . - [L]
+
+#RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule . router.php [L]
