@@ -17,13 +17,7 @@ include_once 'includes/general.php';
 function body()
 {
     $pdo = get_pdo();
-    $view = <<<eod
-CREATE VIEW job_times AS SELECT `job`.*,(SUM(end) - SUM(start)) as time
-  FROM `time_log`
-  LEFT JOIN `job` on `job`.`job_id` = `time_log`.`job_id`
-    GROUP BY `time_log`.`job_id` 
-eod;
-    $pdo->exec($view);
+
     $errors = array();
 
 //get on-working job

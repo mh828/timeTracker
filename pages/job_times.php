@@ -21,9 +21,8 @@ function body()
     $offset = $page * $showInPage;
 
     $pdo = get_pdo();
-    $stm = $pdo->query("SELECT * FROM `job_time` " .
-        " LEFT JOIN `job` ON `job`.`job_id` = `time_log`.`job_id` " .
-        " WHERE `end` IS NOT NULL ORDER BY `start` DESC LIMIT {$showInPage} OFFSET {$offset} ");
+    $stm = $pdo->query("SELECT * FROM `view_job_times` " .
+        " WHERE `time` >= 0 LIMIT {$showInPage} OFFSET {$offset} ");
 
     $res = array();
     while ($r = $stm->fetchObject()) {
@@ -37,10 +36,8 @@ function body()
             <thead class="badge-dark">
             <tr>
                 <th>عنوان کار</th>
-                <th>شروع</th>
-                <th>پایان</th>
-                <th>زمان</th>
-                <th>توضیحات</th>
+                <th>زمان - ثانیه</th>
+                <th>زمان - ساعت و دقیقه و ثانیه</th>
             </tr>
             </thead>
 
@@ -48,10 +45,8 @@ function body()
             <?php foreach ($res as $itm): ?>
                 <tr>
                     <td><?php echo $itm->title ?></td>
-                    <td><?php echo jdate("l d F Y ساعت H:i:s", $itm->start); ?></td>
-                    <td><?php echo jdate("l d F Y ساعت H:i:s", $itm->end); ?></td>
-                    <td><?php echo $itm->duration ?></td>
-                    <td><?php echo $itm->description ?></td>
+                    <td><?php echo $itm->time ?></td>
+                    <td><?php echo convert_seconds($itm->time) ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
