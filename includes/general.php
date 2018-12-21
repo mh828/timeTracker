@@ -49,10 +49,33 @@ function create_tables($pdo)
 
     //views
     $view = <<<eod
-CREATE VIEW view_job_times AS SELECT `job`.*,(SUM(end) - SUM(start)) as time
-  FROM `time_log`
-  LEFT JOIN `job` on `job`.`job_id` = `time_log`.`job_id`
-    GROUP BY `time_log`.`job_id` 
+    CREATE VIEW view_job_times AS SELECT `job`.*,(SUM(end) - SUM(start)) as time
+      FROM `time_log`
+      LEFT JOIN `job` on `job`.`job_id` = `time_log`.`job_id`
+        GROUP BY `time_log`.`job_id` 
+eod;
+    $pdo->exec($view);
+
+    $view = <<<eod
+    CREATE VIEW view_timelog AS SELECT start,
+            datetime(start,'unixepoch','localtime') as start_date,
+           [end],
+            datetime([end],'unixepoch','localtime') as end_date,
+           job_id,
+           duration,
+           description
+      FROM time_log;
+eod;
+    $pdo->exec($view);
+
+    $view = <<<eod
+    CREATE VIEW view_job_daily_sum AS
+    SELECT date([start],'unixepoch','localtime') as start_date,
+            date([end],'unixepoch','localtime') as end_date,
+           job_id,
+           SUM([end]) - SUM(start) as duration
+      FROM time_log
+      GROUP BY start_date,job_id
 eod;
     $pdo->exec($view);
 
