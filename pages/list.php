@@ -33,7 +33,7 @@ function body()
     ?>
 
     <div class="table-responsive">
-        <table class="table">
+        <table class="table table-striped">
             <thead class="badge-dark">
             <tr>
                 <th>عنوان کار</th>
@@ -41,6 +41,7 @@ function body()
                 <th>پایان</th>
                 <th>زمان</th>
                 <th>توضیحات</th>
+                <th>&</th>
             </tr>
             </thead>
 
@@ -51,7 +52,10 @@ function body()
                     <td><?php echo jdate("l d F Y ساعت H:i:s", $itm->start); ?></td>
                     <td><?php echo jdate("l d F Y ساعت H:i:s", $itm->end); ?></td>
                     <td><?php echo $itm->duration ?></td>
-                    <td><?php echo $itm->description ?></td>
+                    <td style="white-space: pre;"><?php echo $itm->description ?></td>
+                    <td>
+
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
