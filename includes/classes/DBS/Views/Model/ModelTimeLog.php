@@ -11,6 +11,7 @@ namespace DBS\Views\Model;
 
 class ModelTimeLog
 {
+    public $rowid;
     public $start;
     public $end;
     public $job_id;

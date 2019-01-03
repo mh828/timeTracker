@@ -78,7 +78,9 @@ global  $TITLE;
     </div>
 </nav>
 
-<?php call_page_function('body'); ?>
+<div class="mt-2">
+    <?php call_page_function('body'); ?>
+</div>
 
 </body>
 </html>

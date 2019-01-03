@@ -21,7 +21,7 @@ function body()
     $offset = $page * $showInPage;
 
     $pdo = get_pdo();
-    $stm = $pdo->query("SELECT `time_log`.*,`job`.`title` FROM `time_log` " .
+    $stm = $pdo->query("SELECT `time_log`.`rowid`, `time_log`.*,`job`.`title` FROM `time_log` " .
         " LEFT JOIN `job` ON `job`.`job_id` = `time_log`.`job_id` " .
         " WHERE `end` IS NOT NULL ORDER BY `start` DESC LIMIT {$showInPage} OFFSET {$offset} ");
 
@@ -36,6 +36,7 @@ function body()
         <table class="table table-striped">
             <thead class="badge-dark">
             <tr>
+                <th>#</th>
                 <th>عنوان کار</th>
                 <th>شروع</th>
                 <th>پایان</th>
@@ -48,6 +49,7 @@ function body()
             <tbody>
             <?php foreach ($res as $itm): ?>
                 <tr>
+                    <td><?php echo $itm->rowid; ?></td>
                     <td><?php echo $itm->title ?></td>
                     <td><?php echo jdate("l d F Y ساعت H:i:s", $itm->start); ?></td>
                     <td><?php echo jdate("l d F Y ساعت H:i:s", $itm->end); ?></td>

@@ -42,7 +42,7 @@ class ViewTimeLog extends \PagingQueryIterator
         $this->totalRows = $query->fetchColumn();
         $this->pageCountCalculate();
 
-        $query = "SELECT [time_log].*,[job].[title] as [job_title] FROM [time_log] " .
+        $query = "SELECT [time_log].[rowid], [time_log].*,[job].[title] as [job_title] FROM [time_log] " .
             " LEFT JOIN [job] ON [job].[job_id] = [time_log].[job_id] " .
             " WHERE [end] IS NOT NULL ";
         if (!empty($this->filter_job_id))
