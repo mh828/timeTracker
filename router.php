@@ -15,7 +15,10 @@ $route_relative_url = dirname(str_replace(str_replace("\\", "/", $_SERVER['DOCUM
 
 define('ROOT_URL', rtrim((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") .
     "://$_SERVER[HTTP_HOST]" . str_replace("\\", "/", $route_relative_url), '/'));
-define('REQUEST', rtrim(str_replace($route_relative_url, '', $_SERVER['REQUEST_URI']), '/'));
+
+$tmp_request = rtrim(str_replace($route_relative_url, '', $_SERVER['REQUEST_URI']), '/');
+$tmp_request = strtok($tmp_request, "?");
+define('REQUEST', $tmp_request);
 define('ROOT_PATH', str_replace("\\", "/", __DIR__));
 
 

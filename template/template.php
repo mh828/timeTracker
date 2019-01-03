@@ -19,7 +19,7 @@ global  $TITLE;
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">زمانبندی</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -33,7 +33,7 @@ global  $TITLE;
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo ROOT_URL ?>/list">تاریخچه</a>
+                <a class="nav-link" href="<?php echo ROOT_URL ?>/list2">تاریخچه</a>
             </li>
 
             <li class="nav-item dropdown">
