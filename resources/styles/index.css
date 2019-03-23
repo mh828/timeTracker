@@ -2,3 +2,8 @@ body {
     direction: rtl;
     font-family: 'B Roya';
 }
+
+.outline {
+    outline: 2px solid var(--primary);
+    outline-offset:  -2px;
+}
