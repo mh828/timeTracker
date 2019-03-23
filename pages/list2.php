@@ -38,14 +38,15 @@ function body()
                 <?php foreach ($timeLogs as $log) : ?>
                     <tr>
                         <td>
-                            <a href="<?php echo ROOT_URL . "/list2?job_id=" . $log->job_id; ?>"><?php echo $log->job_title ?></a>
+                            <a href="<?php echo BASE_URL . "/list2?job_id=" . $log->job_id; ?>"><?php echo $log->job_title ?></a>
                         </td>
                         <td><?php echo $log->duration ?></td>
                         <td><?php echo jdate("l d F Y ساعت H:i:s", $log->start) ?></td>
                         <td><?php echo jdate("l d F Y ساعت H:i:s", $log->end) ?></td>
 
                         <td>
-                            <a href="#">ویرایش</a> |
+                            <a href="<?php echo BASE_URL . "/forms/add?start={$log->start}&job_id={$log->job_id}"; ?>">ویرایش</a>
+                            |
                             <a href="#" class="text-danger">حذف</a>
                         </td>
                     </tr>

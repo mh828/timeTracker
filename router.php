@@ -1,50 +1,58 @@
 <?php
 /**
+ * Router that handle all request
+ * http://php.net/manual/en/features.commandline.webserver.php
+ *
  * Created by PhpStorm.
- * User: mh
- * Date: 12/17/2018
- * Time: 09:01
+ * User: Mahdi Hasanpour
+ * Date: 11/8/2018
+ * Time: 17:58
  */
 
-global $TITLE;
-//$request = str_replace("\\", "/", rtrim($_SERVER['DOCUMENT_ROOT'] . $_SERVER['REQUEST_URI'], '/'));
-//$request = str_replace("\\", "/", __DIR__) . str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['REQUEST_URI']);
-
-
-$route_relative_url = dirname(str_replace(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '', str_replace("\\", "/", __FILE__)));
-
-define('ROOT_URL', rtrim((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") .
-    "://$_SERVER[HTTP_HOST]" . str_replace("\\", "/", $route_relative_url), '/'));
-
-$tmp_request = rtrim(str_replace($route_relative_url, '', $_SERVER['REQUEST_URI']), '/');
-$tmp_request = strtok($tmp_request, "?");
-define('REQUEST', $tmp_request);
-define('ROOT_PATH', str_replace("\\", "/", __DIR__));
-
+include_once 'includes/general.php';
+ini_set("zlib.output_compression", "on");
 
 //auto class loader
 spl_autoload_register(function ($cls_path) {
-    $path = ROOT_PATH . '/includes/classes/' . str_replace("\\", "/", $cls_path) . ".php";
+    $path = __DIR__ . '/includes/classes/' . str_replace("\\", "/", $cls_path) . ".php";
     if (file_exists($path))
         include_once $path . '';
 });
 
-if (preg_match("/\.(?!php)/", $_SERVER['REQUEST_URI'])) {
-    return false;
-} else {
-    $request = ROOT_PATH . '/pages' . REQUEST;
-    if (is_dir($request) && file_exists($request . '/index.php'))
-        include_once $request . '/index.php';
-    else if (file_exists($request . '.php'))
-        include_once $request . '.php';
+$routingProcessor = new CoreProcessor(__DIR__);
+$routingProcessor->pre_processor();
 
-    include_once 'template/template.php';
-    return true;
-}
+define("ROOT_DIR", $routingProcessor->getRootDir());
+define("ROOT_DIR_RELATIVE", $routingProcessor->getRootDirRelative());
+define("BASE_URL", $routingProcessor->getBaseUrl());
+define("REQUEST", $routingProcessor->getRequest());
+define("FULL_REQUEST", $routingProcessor->getFullRequest());
 
-function call_page_function($function, $params = array())
+
+function call_page_function($fun_name)
 {
-    if (function_exists($function))
-        call_user_func_array($function, $params);
+    if (function_exists($fun_name)) {
+        call_user_func($fun_name);
+    }
 }
 
+
+$urlProcessor = new URLProcessor();
+$urlProcessor->findPage(ROOT_DIR . "/pages", REQUEST);
+define("URL_PARAMS", $urlProcessor->params);
+
+global $TITLE, $TEMPLATE, $DESCRIPTION, $KEYWORDS, $DEFAULT_PAGE_IMAGE, $user;
+$TEMPLATE = ROOT_DIR . '/template/template.php';
+
+if ($urlProcessor->page && file_exists($urlProcessor->page)) {
+    include_once $urlProcessor->page . '';
+}
+
+if ($TEMPLATE)
+    include_once $TEMPLATE . '';
+
+
+function url_text_encoding($input)
+{
+    return preg_replace("/\s+/", '-', $input);
+}

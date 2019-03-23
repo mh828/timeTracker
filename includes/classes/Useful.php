@@ -9,7 +9,9 @@
 class Useful
 {
 
-    const VALIDATION_PREG_PATERN_DATE = "/^[0-9]{4}\/(0[0-9]|1[0-2])\/([0-2][0-9]|3[0-1])$/";
+    const VALIDATION_PREG_PATTERN_DATE = "/^[0-9]{4}\/(0[0-9]|1[0-2])\/([0-2][0-9]|3[0-1])$/";
+    const VALIDATION_PREG_PATTERN_TIME = "/^([0-1]?[0-9]|2[0-3])\:[0-5]?[0-9]$/";
+    const MOBILE_IRAN_NUMBERS_VALIDATION = "/^09[0-9]{9}$/";
 
     public function InputCheck($arr)
     {
@@ -243,6 +245,36 @@ class Useful
         if (empty($path))
             $path = $_SERVER["REQUEST_URI"];
         return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER["HTTP_HOST"] . $path;
+    }
+
+    public function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824)
+        {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        }
+        elseif ($bytes >= 1048576)
+        {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        }
+        elseif ($bytes >= 1024)
+        {
+            $bytes = number_format($bytes / 1024, 2) . ' KB';
+        }
+        elseif ($bytes > 1)
+        {
+            $bytes = $bytes . ' bytes';
+        }
+        elseif ($bytes == 1)
+        {
+            $bytes = $bytes . ' byte';
+        }
+        else
+        {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
     }
 
 }

@@ -15,7 +15,7 @@ use DBS\Views\Model\ModelTimeLog;
  * @package DBS\Views
  * @method ModelTimeLog current()
  */
-class ViewTimeLog extends \PagingQueryIterator
+class ViewTimeLog extends \BaseView
 {
     private $filter_job_id;
 

@@ -6,7 +6,7 @@
  * Time: 23:28
  */
 
-abstract class BaseClass
+abstract class BaseTable
 {
     /**
      * @var PDO
@@ -16,7 +16,7 @@ abstract class BaseClass
 
     public function __construct()
     {
-        $this->pdo = Statics::get_pdo();
+        $this->pdo = get_pdo();
     }
 
     public function getErrors($force_validate = false)
@@ -33,7 +33,12 @@ abstract class BaseClass
         return count($this->getErrors($force_validation)) == 0;
     }
 
-    public function fillByStd($data, $validate_data = true)
+    /**
+     * @param $data
+     * @param bool $validate_data
+     * @param null|array $include array of fields
+     */
+    public function fillByStd($data, $validate_data = true, $include = null)
     {
         if ($validate_data)
             $data = $this->input_validate($data);
@@ -43,7 +48,8 @@ abstract class BaseClass
 
         foreach ($props as $prop) {
             $name = $prop->name;
-            $this->$name = isset($data->$name) ? $data->$name : $this->$name;
+            if ($include === null || in_array($name, $include))
+                $this->$name = isset($data->$name) ? $data->$name : $this->$name;
         }
     }
 

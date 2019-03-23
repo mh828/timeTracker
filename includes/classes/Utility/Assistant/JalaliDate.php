@@ -47,4 +47,43 @@ class JalaliDate
                 return '';
         }
     }
+
+    public static function get_date($date)
+    {
+        $time = strtotime($date);
+
+        if (date("Y-m-d") == date("Y-m-d", $time))
+            return "امروز ساعت " . date("H:i:s", $time);
+        else if (date("Y-m-d", strtotime("-1 day")) == date("Y-m-d", $time))
+            return "دیروز ساعت " . date("H:i:s", $time);
+        else
+            return jdate("l d F Y ساعت H:i:s", $time, '', '', 'en');
+    }
+
+    /**
+     * @param $string : input format must be YYYY/mm/dd HH:ii[:ss]
+     * @return false|int
+     */
+    public static function convertStringToTime($string){
+        $split = preg_split("/\s+/",$string);
+        //0 => date
+        //1 => time
+        if(empty($split[0]) || empty($split[1]))
+            return false;
+
+        $date = explode("/",$split[0]);
+        //0 => Year
+        //1 => month
+        //2 => day
+
+        $time = explode(":",$split[1]);
+        //0 => hour
+        //1 => minute
+        //[2] => second ; optional
+
+        if(empty($date[0]) || empty($date[1]) || empty($date[2]) || empty($time[0])  || empty($time[1]))
+            return false;
+        return jmktime($time[0],$time[1],isset($time[2])? $time[2] : 0,
+            $date[1],$date[2],$date[0]);
+    }
 }
