@@ -89,7 +89,7 @@ function body()
                         if ($d == 6)
                             $classes .= "bg-light";
 
-                        echo "<tr> <td class='$classes'>{$day}</td>";
+                        echo "<tr> <td class='bg-dark text-white'>{$day}</td>";
                         for ($m = 1; $m <= 12; $m++) {
                             if (!isset($months[$m])) {
                                 echo "<td class='{$classes}'></td>";
