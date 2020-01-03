@@ -9,8 +9,8 @@
 global $TITLE;
 $TITLE = "گزارش مجموع کارکرد روزانه";
 
-include_once 'includes/general.php';
-include_once 'includes/jdf.php';
+include_once ROOT_DIR . '/includes/general.php';
+include_once ROOT_DIR . '/includes/jdf.php';
 
 function body()
 {

@@ -9,9 +9,9 @@
 global $TITLE;
 $TITLE = 'ثبت زمان';
 
-include_once 'includes/functions.php';
-include_once 'includes/jdf.php';
-include_once 'includes/general.php';
+include_once ROOT_DIR. '/includes/functions.php';
+include_once ROOT_DIR . '/includes/jdf.php';
+include_once ROOT_DIR . '/includes/general.php';
 
 
 function body()

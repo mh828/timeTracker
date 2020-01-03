@@ -7,7 +7,7 @@
  */
 
 namespace Utility\Assistant;
-include_once 'includes/jdf.php';
+include_once ROOT_DIR . '/includes/jdf.php';
 
 
 class JalaliDate

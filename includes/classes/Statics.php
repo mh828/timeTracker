@@ -6,11 +6,11 @@
  * Time: 22:16
  */
 
-include_once 'includes/general.php';
+include_once ROOT_DIR . '/includes/general.php';
 
 class Statics
 {
-    const BUNDLE_JDF = "includes/jdf.php";
+    const BUNDLE_JDF = ROOT_DIR . "/includes/jdf.php";
 
     public static function get_pdo()
     {
