@@ -44,6 +44,7 @@ global  $TITLE;
                 <div class="dropdown-menu" aria-labelledby="reportsDropDown">
                     <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/daily">گزارش روزانه</a>
                     <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/daily_total">گزارش مجموع کارکرد روزانه</a>
+                    <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/job_overview">مجموع زمان کار</a>
                     <a class="dropdown-item" href="#">Another action</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>
