@@ -15,11 +15,12 @@ date_default_timezone_set('Asia/Tehran');
  */
 function get_pdo($enforce_relation = true, $force_recreate = false)
 {
-    $file_location = str_replace("\\", "/", dirname(__DIR__) . '/database/sqlite.dbs');
+    $file_location = str_replace("\\", "/", ROOT_DIR . '/database/sqlite.dbs');
     if (!file_exists(dirname($file_location)))
         mkdir(dirname($file_location), 0777, true);
 
-    if ($file_exist = file_exists($file_location) && $force_recreate) {
+    $file_exist = file_exists($file_location);
+    if ($file_exist && $force_recreate) {
         unlink($file_location);
     }
     $pdo = new PDO("sqlite:{$file_location}");
@@ -41,6 +42,7 @@ function get_pdo($enforce_relation = true, $force_recreate = false)
  */
 function create_tables($pdo)
 {
+    return $pdo->exec(sqliteDDL());
     //tables
     $pdo->exec("CREATE TABLE job (`job_id` INTEGER PRIMARY KEY ,`title` TEXT)");
     $pdo->exec("CREATE TABLE time_log (`start` NUMERIC ,`end` numeric, `job_id` integer," .
