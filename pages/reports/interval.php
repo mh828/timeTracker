@@ -25,8 +25,6 @@ function body()
     $query->bindValue(':end', $end_timestamp);
     $query->execute();
 
-    var_dump($start_timestamp);
-    var_dump($end_timestamp);
 
     include 'interval.template.php';
 }
