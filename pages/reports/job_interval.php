@@ -48,12 +48,12 @@ function body()
         $sum = $sum->fetchColumn(0);
         ?>
         <div class="container">
-            <div>
+            <div class="mb-3 border-bottom border-light container py-2">
                 <span class="mr-1">شغل انتخابی:</span>
                 <span class="font-weight-bolder"><?php echo $job->title; ?></span>
 
                 <span class="mx-2">
-                    <a href="<?php echo BASE_URL . "/reports/job_interval"; ?>">
+                    <a href="<?php echo BASE_URL . "/reports/job_interval"; ?>" class="btn btn-primary">
                         انتخاب شغل دیگر
                     </a>
                 </span>

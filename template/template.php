@@ -12,6 +12,7 @@ global  $TITLE;
 
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/resources/freamworks/bootstrap-4.2.1/css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/resources/styles/fonts/fonts.css"></link>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/resources/styles/index.css">
 </head>
 <body>

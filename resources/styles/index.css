@@ -1,10 +1,14 @@
+:root {
+    font-size: 13px;
+}
+
 body {
     direction: rtl;
-    font-family: 'B Roya';
+    font-family: 'shabnam';
 }
 
 .outline {
     outline: 2px solid var(--primary);
-    outline-offset:  -2px;
+    outline-offset: -2px;
     background: url("../images/back.png");
 }
