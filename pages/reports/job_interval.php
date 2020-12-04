@@ -7,6 +7,7 @@ $TITLE = 'گزارش دوره‌ای شغل';
 function body()
 {
     $job_id = $_REQUEST['job_id'] ?? null;
+    $order = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
     $pdo = get_pdo();
 
     if ($job_id) {
@@ -34,7 +35,11 @@ function body()
         $job->execute([$job_id]);
         $job = $job->fetchObject();
 
-        $query = $pdo->prepare('SELECT * FROM time_log WHERE job_id = :job_id AND start >= :start AND end <= :end');
+        $query = 'SELECT * FROM time_log ';
+        $query .= ' WHERE job_id = :job_id AND start >= :start AND end <= :end';
+        $query .= " ORDER BY end {$order} ";
+
+        $query = $pdo->prepare($query);
         $query->bindValue(':job_id', $job_id);
         $query->bindValue(':start', $start_timestamp);
         $query->bindValue(':end', $end_timestamp);
@@ -127,6 +132,23 @@ function body()
                             </div>
 
                         </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check-inline">
+                        <input type="radio" name="order" value="ASC" <?php echo $order === 'ASC' ? 'checked' : ''; ?>
+                               class="form-check-input" id="order-checkbox-asc">
+                        <label for="order-checkbox-asc" class="form-check-label">
+                            صعودی
+                        </label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input type="radio" name="order" value="DESC" <?php echo $order === 'DESC' ? 'checked' : ''; ?>
+                               class="form-check-input" id="order-checkbox-asc">
+                        <label for="order-checkbox-asc" class="form-check-label">
+                            نزولی
+                        </label>
                     </div>
                 </div>
 
