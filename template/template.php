@@ -9,10 +9,8 @@ global  $TITLE;
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?php echo !empty($TITLE) ? $TITLE . " | " : '' ?>مدیریت زمان</title>
 
-    <script src="<?php echo BASE_URL; ?>/resources/freamworks/jquery-3.3.1.min.js"></script>
-    <script src="<?php echo BASE_URL; ?>/resources/freamworks/popper.js"></script>
-    <script src="<?php echo BASE_URL; ?>/resources/freamworks/bootstrapRTL/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/resources/freamworks/bootstrapRTL/bootstrap.min.css">
+
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/resources/freamworks/bootstrap-4.2.1/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/resources/styles/index.css">
 </head>
@@ -33,6 +31,10 @@ global  $TITLE;
             </li>
 
             <li class="nav-item">
+                <a class="nav-link" href="<?php echo BASE_URL ?>/register-list">ثبت لیست</a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="<?php echo BASE_URL ?>/list2">تاریخچه</a>
             </li>
 
@@ -43,8 +45,11 @@ global  $TITLE;
                 </a>
                 <div class="dropdown-menu" aria-labelledby="reportsDropDown">
                     <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/daily">گزارش روزانه</a>
-                    <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/daily_total">گزارش مجموع کارکرد روزانه</a>
+                    <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/daily_total">گزارش مجموع کارکرد
+                        روزانه</a>
                     <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/job_overview">مجموع زمان کار</a>
+                    <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/interval">دوره ای</a>
+                    <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/job_interval">دوره ای شغل</a>
                     <a class="dropdown-item" href="#">Another action</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>
@@ -83,5 +88,10 @@ global  $TITLE;
     <?php call_page_function('body'); ?>
 </div>
 
+<script src="<?php echo BASE_URL; ?>/resources/freamworks/jquery-3.5.1.min.js"></script>
+<script src="<?php echo BASE_URL; ?>/resources/freamworks/popper.min.js"></script>
+<script src="<?php echo BASE_URL; ?>/resources/freamworks/bootstrap-4.2.1/js/bootstrap.min.js"></script>
+
+<?php call_page_function('script'); ?>
 </body>
 </html>

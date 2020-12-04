@@ -4,7 +4,7 @@
 
         <div class="form-row">
             <div class="form-group col-md">
-                <label>از تاریخ</label>
+                <label class="sr-only">از تاریخ</label>
                 <div class="form-row">
                     <div class="form-group col-sm">
                         <label>روز شروع</label>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="form-group col-md">
-                <label>تا تاریخ</label>
+                <label class="sr-only">تا تاریخ</label>
                 <div class="form-row">
                     <div class="form-group col-sm">
                         <label>روز پایان</label>
@@ -96,6 +96,11 @@
                     <tr>
                         <td><?php echo $row->title ?></td>
                         <td><?php echo convert_seconds($row->sum) ?></td>
+                        <td>
+                            <a href="<?php echo BASE_URL . "/reports/job_interval?job_id={$row->job_id}"; ?>">
+                                گزارش دوره ای
+                            </a>
+                        </td>
                     </tr>
                 <?php } ?>
             <?php endif; ?>
