@@ -11,16 +11,16 @@ function body()
     $pdo = get_pdo();
 
     if ($job_id) {
-        $beginning = $pdo->query('SELECT start FROM time_log  order by start asc  limit 1 ');
-        $beginning->execute();
+        $beginning = $pdo->query('SELECT start FROM time_log WHERE job_id = ?  order by start asc  limit 1 ');
+        $beginning->execute([$job_id]);
         $beginning = $beginning->fetchColumn(0);
 
         $start_day = jdate('d', $beginning, '', '', 'en');
         $start_month = jdate('m', $beginning, '', '', 'en');
         $start_year = jdate('Y', $beginning, '', '', 'en');
 
-        $ending = $pdo->query('SELECT end FROM time_log  order by end desc  limit 1 ');
-        $ending->execute();
+        $ending = $pdo->query('SELECT end FROM time_log  WHERE job_id = ?  order by end desc  limit 1 ');
+        $ending->execute([$job_id]);
         $ending = $ending->fetchColumn(0);
 
         $end_day = jdate('d', $ending, '', '', 'en');
