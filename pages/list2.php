@@ -47,7 +47,8 @@ function body()
                         <td>
                             <a href="<?php echo BASE_URL . "/forms/log/add?start={$log->start}&job_id={$log->job_id}"; ?>">ویرایش</a>
                             |
-                            <a href="#" class="text-danger">حذف</a>
+                            <a href="<?php echo BASE_URL . "/forms/log/delete?rowid={$log->rowid}" ?>"
+                               class="text-danger">حذف</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
