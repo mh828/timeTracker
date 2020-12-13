@@ -10,19 +10,30 @@ function body()
     $order = !empty($_REQUEST['order']) ? $_REQUEST['order'] : 'DESC';
     $pdo = get_pdo();
 
-    if ($job_id) {
-        $beginning = $pdo->query('SELECT start FROM time_log WHERE job_id = ?  order by start asc  limit 1 ');
-        $beginning->execute([$job_id]);
-        $beginning = $beginning->fetchColumn(0);
+    $date_time_formats = [
+        "H:i:s",
+        "(l) d F Y - H:i:s",
+        "l d F Y - H:i:s",
+        "Y-m-d H:i:s",
+        "Y/m/d H:i:s"
+    ];
+    $date_time_format = $date_time_formats[0];
 
+    if ($job_id) {
+        $query_start_date = $pdo->query('SELECT start FROM time_log WHERE job_id = ?  order by start asc  limit 1 ');
+        $query_start_date->execute([$job_id]);
+        $query_start_date = $query_start_date->fetchColumn(0);
+
+        $beginning = strtotime('last saturday');
         $start_day = jdate('d', $beginning, '', '', 'en');
         $start_month = jdate('m', $beginning, '', '', 'en');
         $start_year = jdate('Y', $beginning, '', '', 'en');
 
-        $ending = $pdo->query('SELECT end FROM time_log  WHERE job_id = ?  order by end desc  limit 1 ');
-        $ending->execute([$job_id]);
-        $ending = $ending->fetchColumn(0);
+        $query_end_date = $pdo->query('SELECT end FROM time_log  WHERE job_id = ?  order by end desc  limit 1 ');
+        $query_end_date->execute([$job_id]);
+        $query_end_date = $query_end_date->fetchColumn(0);
 
+        $ending = time();
         $end_day = jdate('d', $ending, '', '', 'en');
         $end_month = jdate('m', $ending, '', '', 'en');
         $end_year = jdate('Y', $ending, '', '', 'en');
@@ -51,6 +62,9 @@ function body()
         $sum->bindValue(':end', $end_timestamp);
         $sum->execute();
         $sum = $sum->fetchColumn(0);
+
+        $dont_show_day_column = !empty($_POST['dont_show_day_column']);
+
         ?>
         <div class="container">
             <div class="mb-3 border-bottom border-light container py-2">
@@ -135,19 +149,50 @@ function body()
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="form-check-inline">
-                        <input type="radio" name="order" value="ASC" <?php echo $order === 'ASC' ? 'checked' : ''; ?>
-                               class="form-check-input" id="order-checkbox-asc">
-                        <label for="order-checkbox-asc" class="form-check-label">
-                            صعودی
-                        </label>
+                <div class="form-row">
+                    <div class="form-group col-md">
+                        <div class="form-check-inline">
+                            <input type="radio" name="order"
+                                   value="ASC" <?php echo $order === 'ASC' ? 'checked' : ''; ?>
+                                   class="form-check-input" id="order-checkbox-asc">
+                            <label for="order-checkbox-asc" class="form-check-label">
+                                صعودی
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <input type="radio" name="order"
+                                   value="DESC" <?php echo $order === 'DESC' ? 'checked' : ''; ?>
+                                   class="form-check-input" id="order-checkbox-asc">
+                            <label for="order-checkbox-asc" class="form-check-label">
+                                نزولی
+                            </label>
+                        </div>
                     </div>
-                    <div class="form-check-inline">
-                        <input type="radio" name="order" value="DESC" <?php echo $order === 'DESC' ? 'checked' : ''; ?>
-                               class="form-check-input" id="order-checkbox-asc">
-                        <label for="order-checkbox-asc" class="form-check-label">
-                            نزولی
+
+                    <div class="form-group col-md">
+                        <label>فرمت نمایش تاریخ</label>
+
+                        <div>
+                            <?php foreach ($date_time_formats as $key => $format) : ?>
+                                <div class="form-check">
+                                    <input id="date_time_format_<?php echo $key ?>" type="radio" name="date_time_format"
+                                        <?php echo $format === $date_time_format ? 'checked' : '' ?>
+                                           value="<?php echo $format ?>"
+                                           class="form-check-input"/>
+                                    <label class="form-check-label" for="date_time_format_<?php echo $key ?>">
+                                        <?php echo jdate($format, '', '', '', 'en') ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="checkbox" name="dont_show_day_column" value="1"
+                            <?php echo $dont_show_day_column ? 'checked' : ''; ?>
+                               class="form-check-input" id="show-day-column-checkbox">
+                        <label for="show-day-column-checkbox" class="form-check-label">
+                            عدم نمایش ستون روز
                         </label>
                     </div>
                 </div>
@@ -158,16 +203,46 @@ function body()
             </form>
 
             <hr/>
+
             <div>
-                <b class="font-weight-bolder mr-1">مجموع ساعت: </b>
-                <span class="h5"><?php echo convert_seconds($sum); ?></span>
+                <table>
+                    <tr>
+                        <th class="pr-2">بازه گزارش از:</th>
+                        <td>
+                            <?php echo jdate('(l) d F Y', $beginning, '', '', 'en'); ?>
+                        </td>
+                        <th class="px-2">تا:</th>
+                        <td>
+                            <?php echo jdate('(l) d F Y', $ending, '', '', 'en'); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="pr-2">بازه فعالیت از :</th>
+                        <td>
+                            <?php echo jdate('(l) d F Y', $query_start_date, '', '', 'en'); ?>
+                        </td>
+                        <th class="px-2">تا:</th>
+                        <td>
+                            <?php echo jdate('(l) d F Y', $query_end_date, '', '', 'en'); ?>
+                        </td>
+                    </tr>
+                    <tr class="border-top">
+                        <th class="pr-2">مجموع ساعت:</th>
+                        <td>
+                            <?php echo convert_seconds($sum); ?>
+                        </td>
+                    </tr>
+                </table>
             </div>
+
             <div class="container">
                 <div class="table-responsive">
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
-                            <th>روز</th>
+                            <?php if (!$dont_show_day_column): ?>
+                                <th>روز</th>
+                            <?php endif; ?>
                             <th>زمان شروع</th>
                             <th>زمان پایان</th>
                             <th>مدت زمان</th>
@@ -178,11 +253,13 @@ function body()
                         <tbody>
                         <?php while ($r = $query->fetchObject()) : ?>
                             <tr>
-                                <td>
-
-                                </td>
-                                <td><?php echo jdate("(l) d F Y - H:i:s", $r->start) ?></td>
-                                <td><?php echo jdate("(l) d F Y - H:i:s", $r->end) ?></td>
+                                <?php if (!$dont_show_day_column) : ?>
+                                    <td>
+                                        <?php echo jdate("l d F Y", $r->start) ?>
+                                    </td>
+                                <?php endif; ?>
+                                <td><?php echo jdate($date_time_format, $r->start) ?></td>
+                                <td><?php echo jdate($date_time_format, $r->end) ?></td>
                                 <td><?php echo $r->duration; ?></td>
                                 <td><?php echo $r->description; ?></td>
                             </tr>
