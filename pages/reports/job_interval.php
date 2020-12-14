@@ -209,11 +209,11 @@ function body()
                     <tr>
                         <th class="pr-2">بازه گزارش از:</th>
                         <td>
-                            <?php echo jdate('(l) d F Y', $beginning, '', '', 'en'); ?>
+                            <?php echo jdate('(l) d F Y', $start_timestamp, '', '', 'en'); ?>
                         </td>
                         <th class="px-2">تا:</th>
                         <td>
-                            <?php echo jdate('(l) d F Y', $ending, '', '', 'en'); ?>
+                            <?php echo jdate('(l) d F Y', $end_timestamp, '', '', 'en'); ?>
                         </td>
                     </tr>
                     <tr>
