@@ -50,7 +50,8 @@ function body()
             $query->bindValue(':description',trim($on_working->description . PHP_EOL . $_POST['description']) );
             $query->bindValue(":start", $on_working->start);;
             $query->bindValue(":job_id", $on_working->job_id);
-            $query->execute();
+            if($query->execute())
+                header("location: " . $_SERVER['REQUEST_URI']);
         }
     }
 
@@ -177,6 +178,13 @@ function body()
 
             <div class="form-group">
                 <label>توضیحات</label>
+
+                <?php if(!empty($on_working->description)): ?>
+                <div class="border p-2 rounded my-3">
+                    <div style="white-space: pre" class="my-2"><?php echo $on_working->description; ?></div>
+                </div>
+                <?php endif; ?>
+
                 <textarea placeholder="توضیحات" name="description" class="form-control"></textarea>
             </div>
         </div>
