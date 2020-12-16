@@ -49,8 +49,12 @@ global  $TITLE;
                     <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/daily_total">گزارش مجموع کارکرد
                         روزانه</a>
                     <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/job_overview">مجموع زمان کار</a>
+
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/interval">دوره ای</a>
                     <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/job_interval">دوره ای شغل</a>
+                    <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/job_interval_daily">دوره ای شغل (روزانه)</a>
+
                     <a class="dropdown-item" href="#">Another action</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>

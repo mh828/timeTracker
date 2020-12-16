@@ -75,6 +75,14 @@ function body()
         }
     }
 
+
+    $latestDidJobs = "select job.job_id,job.title,count(time_log.duration) as 'count',  max(time_log.end) as 'end' from job ".
+    " left join time_log on time_log.job_id = job.job_id ".
+    " where time_log.end is not null ".
+    " group by job.job_id ".
+    " order by time_log.end DESC LIMIT 5";
+    $latestDidJobs = $pdo->prepare($latestDidJobs);
+    $latestDidJobs->execute();
     ?>
 
     <div class="container mt-2">
@@ -107,6 +115,19 @@ function body()
                             <?php echo $job->title ?>
                         </button>
                     <?php endforeach; ?>
+                </div>
+
+                <hr />
+                <h3>آخرین کارهای انجام شده</h3>
+                <div class="d-flex flex-column align-items-start flex-wrap" id="job-buttons">
+                    <?php while ( $job = $latestDidJobs->fetchObject()) : ?>
+                        <button type="button" data-title="<?php echo $job->title ?>"
+                        onclick="onJobStart(event,'<?php echo $job->job_id ?>')"
+                        class="btn btn-light m-1 shadow-sm">
+                            <span><?php echo $job->title ?></span>
+                            <span class="badge badge-info ml-2"><?php echo $job->count ?></span>
+                        </button>
+                    <?php endwhile; ?>
                 </div>
             </div>
 
