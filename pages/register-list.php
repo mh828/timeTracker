@@ -29,7 +29,7 @@ function body()
         $_POST = input_validate($_POST);
         $on_working->end = time();
         $on_working->duration = calculate_time($on_working->start, $on_working->end);
-        $on_working->description = !empty($_POST['description']) ? $_POST['description'] : '';
+        //$on_working->description = !empty($_POST['description']) ? $_POST['description'] : '';
 
         $stm = $pdo->prepare("UPDATE time_log  SET `end` = :end, `duration` = :duration, " .
             "`description` = :description " .
@@ -37,11 +37,21 @@ function body()
         $stm->bindValue(":start", $on_working->start);
         $stm->bindValue(":end", $on_working->end);
         $stm->bindValue(":duration", $on_working->duration);
-        $stm->bindValue(":description", $on_working->description);
+        $stm->bindValue(":description", trim($on_working->description . PHP_EOL . $_POST['description']));
         $stm->bindValue(":job_id", $on_working->job_id);
 
         if ($stm->execute())
             header("location: " . $_SERVER['REQUEST_URI']);
+    }
+    else if(isset($_POST['append_description'])){
+        $_POST = input_validate($_POST);
+        if(!empty($_POST['description'])){
+            $query = $pdo->prepare("UPDATE time_log SET description  =  :description WHERE start = :start AND job_id = :job_id");
+            $query->bindValue(':description',trim($on_working->description . PHP_EOL . $_POST['description']) );
+            $query->bindValue(":start", $on_working->start);;
+            $query->bindValue(":job_id", $on_working->job_id);
+            $query->execute();
+        }
     }
 
     $list_of_jobs = array();
@@ -87,7 +97,7 @@ function body()
 
     <div class="container mt-2">
 <?php if (!$on_working): ?>
-    <form method="post" class="card">
+    <form method="post" class="card" id="start-activity-form">
         <h4 class="card-header">شروع فعالیت</h4>
 
         <div class="card-body">
@@ -173,6 +183,7 @@ function body()
 
         <div class="card-footer">
             <input type="submit" name="end_job" value="پایان دادن به کار" class="btn btn-primary"/>
+            <input type="submit" name="append_description" value="اضافه کردن توضیحات" class="btn btn-info"/>
         </div>
     </form>
 
@@ -214,7 +225,7 @@ function script()
     }
 
     function onJobStart(e,job_id){
-        const form = e.target.form;
+        const form = document.getElementById('start-activity-form');
         form.job_id.value = job_id;
         $(form).append('<input type="hidden" name="start_job" />');
         form.submit();

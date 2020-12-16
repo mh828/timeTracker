@@ -261,7 +261,9 @@ function body()
                                 <td><?php echo jdate($date_time_format, $r->start) ?></td>
                                 <td><?php echo jdate($date_time_format, $r->end) ?></td>
                                 <td><?php echo $r->duration; ?></td>
-                                <td><?php echo $r->description; ?></td>
+                                <td>
+                                    <span style="white-space: pre"><?php echo $r->description; ?></span>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                         </tbody>
