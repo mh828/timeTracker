@@ -11,11 +11,21 @@ function body()
     $pdo = get_pdo();
 
     $date_time_formats = [
-        "H:i:s",
-        "(l) d F Y - H:i:s",
-        "l d F Y - H:i:s",
-        "Y-m-d H:i:s",
-        "Y/m/d H:i:s"
+        "(l) d F Y",
+        "l d F Y",
+        "D d F Y",
+        "l d F",
+        "D d F",
+        "Y-m-d",
+        "l Y-m-d",
+        "D Y-m-d",
+        "m-d",
+        "Y/m/d",
+        "m/d",
+        "l Y/m/d",
+        "D Y/m/d",
+        "l m/d",
+        "D m/d"
     ];
     $date_time_format = $date_time_formats[0];
 
@@ -170,9 +180,12 @@ function body()
                     </div>
 
                     <div class="form-group col-md">
-                        <label>فرمت نمایش تاریخ</label>
+                        <label data-target="#date-format-list" data-toggle="collapse" style="cursor: pointer">
+                            فرمت نمایش تاریخ
+                            <span class="ml-2">&check;</span>
+                        </label>
 
-                        <div>
+                        <div class="collapse" id="date-format-list">
                             <?php foreach ($date_time_formats as $key => $format) : ?>
                                 <div class="form-check">
                                     <input id="date_time_format_<?php echo $key ?>" type="radio" name="date_time_format"
@@ -255,11 +268,11 @@ function body()
                             <tr>
                                 <?php if (!$dont_show_day_column) : ?>
                                     <td>
-                                        <?php echo jdate("l d F Y", $r->start) ?>
+                                        <?php echo jdate($date_time_format, $r->start) ?>
                                     </td>
                                 <?php endif; ?>
-                                <td><?php echo jdate($date_time_format, $r->start) ?></td>
-                                <td><?php echo jdate($date_time_format, $r->end) ?></td>
+                                <td><?php echo jdate("H:i:s", $r->start) ?></td>
+                                <td><?php echo jdate("H:i:s", $r->end) ?></td>
                                 <td><?php echo $r->duration; ?></td>
                                 <td>
                                     <span style="white-space: pre"><?php echo $r->description; ?></span>
