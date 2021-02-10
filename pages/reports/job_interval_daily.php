@@ -46,7 +46,7 @@ function body()
         $job->execute([$job_id]);
         $job = $job->fetchObject();
 
-        $query = "start,end,date(start,'unixepoch') as startdata, sum(end) - sum(start) as sum";
+        $query = "start,end,date(start,'unixepoch','localtime') as startdata, sum(end) - sum(start) as sum";
         $query = 'SELECT ' . $query . ' FROM time_log ';
         $query .= ' WHERE job_id = :job_id AND start >= :start AND end <= :end';
         $query .= " group by startdata ";
