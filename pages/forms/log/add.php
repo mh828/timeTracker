@@ -22,21 +22,22 @@ function body()
         $model->start = \Utility\Assistant\JalaliDate::convertStringToTime($model->start_date);
         $model->end = \Utility\Assistant\JalaliDate::convertStringToTime($model->end_date);
 
+        $model->setValidateEndField(false);
         if ($model->save()) {
-            header("location:" . BASE_URL);
+            header("location:" . BASE_URL . '/list2');
             exit();
         } else {
             $errors = $model->getErrors();
         }
     } else if (!empty($_GET['start']) && !empty($_GET['job_id'])) {
-        $model->load_by_primary_keys($_GET['start'],$_GET['job_id']);
+        $model->load_by_primary_keys($_GET['start'], $_GET['job_id']);
     }
     ?>
     <div class="container">
         <form method="post" class="card">
 
-            <input type="hidden" name="pk_job_id" value="<?php echo $model->pk_job_id ?>" />
-            <input type="hidden" name="pk_start" value="<?php echo $model->pk_start ?>" />
+            <input type="hidden" name="pk_job_id" value="<?php echo $model->pk_job_id ?>"/>
+            <input type="hidden" name="pk_start" value="<?php echo $model->pk_start ?>"/>
 
             <h4 class="card-header">ثبت زمان</h4>
 

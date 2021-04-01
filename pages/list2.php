@@ -15,7 +15,9 @@ function body()
     $job_id = isset($_GET['job_id']) ? $_GET['job_id'] : null;
 
     $timeLogs = new \DBS\Views\ViewTimeLog($showInPage, $page);
-    $timeLogs->filter_job_id($job_id)->do_query();
+    $timeLogs->filter_job_id($job_id)
+        ->hide_undone(empty($_GET['all']))
+        ->do_query();
 
     $paging_controller = new \Utility\Assistant\Paging($timeLogs);
 
@@ -40,9 +42,9 @@ function body()
                         <td>
                             <a href="<?php echo BASE_URL . "/list2?job_id=" . $log->job_id; ?>"><?php echo $log->job_title ?></a>
                         </td>
-                        <td><?php echo $log->duration ?></td>
+                        <td><?php echo !empty($log->end) ? $log->duration : '--- درحال اجرا ---' ?></td>
                         <td><?php echo jdate("l d F Y ساعت H:i:s", $log->start) ?></td>
-                        <td><?php echo jdate("l d F Y ساعت H:i:s", $log->end) ?></td>
+                        <td><?php echo !empty($log->end) ? jdate("l d F Y ساعت H:i:s", $log->end) : '--- درحال اجرا ---' ?></td>
 
                         <td>
                             <a href="<?php echo BASE_URL . "/forms/log/add?start={$log->start}&job_id={$log->job_id}"; ?>">ویرایش</a>

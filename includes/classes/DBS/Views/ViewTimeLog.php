@@ -18,6 +18,7 @@ use DBS\Views\Model\ModelTimeLog;
 class ViewTimeLog extends \BaseView
 {
     private $filter_job_id;
+    private $filter_undone_job = true;
 
     /**
      * @param $job_id
@@ -26,6 +27,12 @@ class ViewTimeLog extends \BaseView
     public function filter_job_id($job_id)
     {
         $this->filter_job_id = $job_id;
+        return $this;
+    }
+
+    public function hide_undone(bool $value)
+    {
+        $this->filter_undone_job = $value;
         return $this;
     }
 
@@ -44,7 +51,9 @@ class ViewTimeLog extends \BaseView
 
         $query = "SELECT [time_log].[rowid], [time_log].*,[job].[title] as [job_title] FROM [time_log] " .
             " LEFT JOIN [job] ON [job].[job_id] = [time_log].[job_id] " .
-            " WHERE [end] IS NOT NULL ";
+            " WHERE 1 ";
+        if ($this->filter_undone_job)
+            $query .= ' AND [end] IS NOT NULL ';
         if (!empty($this->filter_job_id))
             $query .= " AND [time_log].[job_id] =  '{$this->filter_job_id}' ";
 

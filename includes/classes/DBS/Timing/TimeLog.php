@@ -23,15 +23,21 @@ class TimeLog extends \BaseTable
     public $duration;
     public $description;
 
+    private $_validateEndField = true;
+
     public function validation()
     {
         $this->errors = array();
         if (empty($this->start))
             $this->errors['start'] = 'زمان شروع تعیین نشده است';
-        if (empty($this->end))
-            $this->errors['end'] = 'زمان پایان تعیین نشده است';
-        else if ($this->end <= $this->start)
-            $this->errors['end'] = 'زمان پایان کمتر از شروع است';
+
+        if ($this->_validateEndField) {
+            if (empty($this->end))
+                $this->errors['end'] = 'زمان پایان تعیین نشده است';
+            else if ($this->end <= $this->start)
+                $this->errors['end'] = 'زمان پایان کمتر از شروع است';
+        }
+
         if (empty($this->job_id))
             $this->errors['job_id'] = 'فعالیت تعیین نشده است';
     }
@@ -84,5 +90,11 @@ class TimeLog extends \BaseTable
         $this->end_date = !empty($this->end) ? jdate("Y/m/d H:i:s", $this->end, '', '', 'en') : '';
         $this->pk_start = $this->start;
         $this->pk_job_id = $this->job_id;
+    }
+
+    public function setValidateEndField(bool $validateEndField)
+    {
+        $this->_validateEndField = $validateEndField;
+        return $this;
     }
 }
