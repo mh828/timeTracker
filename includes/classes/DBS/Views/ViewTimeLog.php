@@ -53,7 +53,7 @@ class ViewTimeLog extends \BaseView
             " LEFT JOIN [job] ON [job].[job_id] = [time_log].[job_id] " .
             " WHERE 1 ";
         if ($this->filter_undone_job)
-            $query .= ' AND [end] IS NOT NULL ';
+            $query .= " AND IFNULL([end],'') <> '' ";
         if (!empty($this->filter_job_id))
             $query .= " AND [time_log].[job_id] =  '{$this->filter_job_id}' ";
 

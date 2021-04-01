@@ -21,7 +21,7 @@ function body()
     $errors = array();
 
 //get on-working job
-    $on_working = $pdo->query("SELECT `time_log`.*,`job`.`title` FROM `time_log` LEFT JOIN `job` ON `job`.`job_id` = `time_log`.`job_id` WHERE `end` IS NULL ORDER BY `start` DESC LIMIT 1");
+    $on_working = $pdo->query("SELECT `time_log`.*,`job`.`title` FROM `time_log` LEFT JOIN `job` ON `job`.`job_id` = `time_log`.`job_id` WHERE IFNULL(`end`,'') = '' ORDER BY `start` DESC LIMIT 1");
     $on_working = $on_working->fetchObject();
 
 
