@@ -55,7 +55,7 @@ function body()
                     <?= $dontShowPassed ? 'checked' : '' ?>
                        id="show_passed_checkbox" value="1" name="dont_show_passed"/>
                 <label class="form-check-label" for="show_passed_checkbox">
-                    نمایش زمان گذشته
+                    عدم نمایش روزها گذشته
                 </label>
 
                 <input type="submit" class="btn btn-primary" value="فیلتر"/>
