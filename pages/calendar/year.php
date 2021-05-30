@@ -14,6 +14,8 @@ Statics::addBundle(Statics::BUNDLE_JDF);
 function body()
 {
     $currentYear = $year = jdate("Y", '', '', '', 'en');
+    $dontShowPassed = $_GET['dont_show_passed'] ?? false;
+
     if (!empty(URL_PARAMS[0]) && preg_match("/^[0-9]+$/", URL_PARAMS[0])) {
         $year = URL_PARAMS[0];
     }
@@ -46,6 +48,19 @@ function body()
 
             </div>
         <?php endif; ?>
+
+        <form class="my-2">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input"
+                    <?= $dontShowPassed ? 'checked' : '' ?>
+                       id="show_passed_checkbox" value="1" name="dont_show_passed"/>
+                <label class="form-check-label" for="show_passed_checkbox">
+                    نمایش زمان گذشته
+                </label>
+
+                <input type="submit" class="btn btn-primary" value="فیلتر"/>
+            </div>
+        </form>
 
 
         <div class="table-responsive">
@@ -105,8 +120,9 @@ function body()
                                 $tmp_class = ' text-center ';
 
 
-                                if (jmktime(0, 0, 0, $m, $months[$m], $year) <= time())
+                                if (!$dontShowPassed && jmktime(0, 0, 0, $m, $months[$m], $year) <= time())
                                     $tmp_class .= " outline ";
+
                                 if ($d == 6)
                                     $tmp_class .= " bg-light ";
 
