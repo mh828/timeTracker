@@ -39,6 +39,10 @@ global  $TITLE;
                 <a class="nav-link" href="<?php echo BASE_URL ?>/list2">تاریخچه</a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo BASE_URL ?>/jobs">فعالیت‌ها</a>
+            </li>
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="reportsDropDown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
@@ -53,7 +57,8 @@ global  $TITLE;
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/interval">دوره ای</a>
                     <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/job_interval">دوره ای شغل</a>
-                    <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/job_interval_daily">دوره ای شغل (روزانه)</a>
+                    <a class="dropdown-item" href="<?php echo BASE_URL ?>/reports/job_interval_daily">دوره ای شغل
+                        (روزانه)</a>
 
                     <a class="dropdown-item" href="#">Another action</a>
                     <div class="dropdown-divider"></div>
