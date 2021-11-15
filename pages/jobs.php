@@ -34,13 +34,13 @@ function body()
                         <td><?= $p->title ?></td>
                         <td>
 
-                            <a href="" class="btn btn-primary">
+                            <a href="/jobs/edit?id=<?= $p->job_id ?>" class="btn btn-primary">
                                 ویرایش
                             </a>
 
-                            <a href="" class="btn btn-danger ml-1">
+                            <!--<a href="" class="btn btn-danger ml-1">
                                 حذف
-                            </a>
+                            </a>-->
                         </td>
                     </tr>
                 <?php endwhile; ?>
