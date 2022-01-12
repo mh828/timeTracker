@@ -62,6 +62,7 @@ global  $TITLE;
 
                     <a class="dropdown-item" href="#">Another action</a>
                     <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/reports/export">استخراج CSV</a>
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </li>
