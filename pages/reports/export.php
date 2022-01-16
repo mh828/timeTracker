@@ -26,11 +26,12 @@ query;
     $query->execute();
 
 
+    header('Content-Encoding: UTF-8');
     header('Content-Type: text/csv; charset=UTF-8');
     header('Content-Disposition: attachment; filename="calender.csv"');
     echo "Subject,Start Date,Start Time,End Date,End Time,Description\n";
     while ($obj = $query->fetchObject()) {
-        echo "{$obj->title},{$obj->start_date},{$obj->start_time},{$obj->end_date},{$obj->end_time},{$obj->description}";
+        echo "\"{$obj->title}\",\"{$obj->start_date}\",\"{$obj->start_time}\",\"{$obj->end_date}\",\"{$obj->end_time}\",\"{$obj->description}\"";
         echo "\n";
     }
     die();
