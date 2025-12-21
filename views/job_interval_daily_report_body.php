@@ -272,7 +272,8 @@ $allResult = [];
                 <?php
                 $startLoopTime = new DateTime();
                 $startLoopTime->setTimestamp($start_timestamp);
-                $loopIndex = 0;
+                $loopIndex = $currentColor = 0;
+                $monthsColors = ['#007bff29', '#28a74529', '#17a2b829', '#ffc10729', '#e83e8c29', '#6f42c129'];
                 ?>
                 <?php while ($startLoopTime->getTimestamp() <= $end_timestamp): ?>
                     <?php
@@ -283,7 +284,7 @@ $allResult = [];
                     <?php endif; ?>
                     <?php if ($loopIndex == $dayOfWeek) : ?>
                         <?php if ($allResult[$startLoopTime->format('Y-m-d')] ?? null): ?>
-                            <td>
+                            <td style="background: <?= $monthsColors[$currentColor] ?? 'transparent' ?>">
                                 <div style="font-size: 1.5rem">
                                     <?= convert_seconds($allResult[$startLoopTime->format('Y-m-d')]?->sum ?? 0); ?>
                                 </div>
@@ -294,7 +295,13 @@ $allResult = [];
                         <?php else: ?>
                             <td class="bg-danger">---</td>
                         <?php endif; ?>
-                        <?php $startLoopTime->modify('+1 days'); ?>
+                        <?php
+                        $lastMonth = jdate('m', $startLoopTime->getTimestamp(), tr_num: 'en');
+                        $startLoopTime->modify('+1 days');
+                        if ($lastMonth !== jdate('m', $startLoopTime->getTimestamp(), tr_num: 'en')) {
+                            $currentColor = $currentColor + 2 > count($monthsColors) ? 0 : $currentColor + 1;
+                        }
+                        ?>
                     <?php else: ?>
                         <td>---</td>
                     <?php endif; ?>
