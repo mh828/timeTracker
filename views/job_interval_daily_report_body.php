@@ -49,7 +49,7 @@ $sum->execute();
 $sum = $sum->fetchColumn(0);
 
 $dont_show_day_column = !empty($_POST['dont_show_day_column']);
-
+$allResult = [];
 ?>
 <div class="container">
     <div class="d-print-none">
@@ -237,6 +237,9 @@ $dont_show_day_column = !empty($_POST['dont_show_day_column']);
 
                 <tbody>
                 <?php while ($r = $query->fetchObject()) : ?>
+                    <?php
+                    $allResult[date('Y-m-d', $r->start)] = $r;
+                    ?>
                     <tr>
                         <?php if (!$dont_show_day_column) : ?>
                             <td>
@@ -276,10 +279,21 @@ $dont_show_day_column = !empty($_POST['dont_show_day_column']);
                         <tr>
                     <?php endif; ?>
                     <?php if ($loopIndex == $dayOfWeek) : ?>
-                        <td><?= jdate("d F Y", $startLoopTime->getTimestamp()) ?></td>
+                        <?php if ($allResult[$startLoopTime->format('Y-m-d')] ?? null): ?>
+                            <td>
+                                <div style="font-size: 1.5rem">
+                                    <?= convert_seconds($allResult[$startLoopTime->format('Y-m-d')]?->sum ?? 0); ?>
+                                </div>
+                                <div class="small text-muted">
+                                    <?= jdate("d F Y", $startLoopTime->getTimestamp()) ?>
+                                </div>
+                            </td>
+                        <?php else: ?>
+                            <td>---</td>
+                        <?php endif; ?>
                         <?php $startLoopTime->modify('+1 days'); ?>
                     <?php else: ?>
-                    <td>___</td>
+                        <td>---</td>
                     <?php endif; ?>
 
                     <?php if ($loopIndex === 6): ?>
