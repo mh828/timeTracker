@@ -250,7 +250,7 @@ $dont_show_day_column = !empty($_POST['dont_show_day_column']);
             </table>
         </div>
         <div class="mt-3 calendar">
-            <table class="table">
+            <table class="table text-center table-bordered table-striped table-hover">
                 <thead>
                 <tr>
                     <th>شنبه</th>
@@ -276,7 +276,7 @@ $dont_show_day_column = !empty($_POST['dont_show_day_column']);
                         <tr>
                     <?php endif; ?>
                     <?php if ($loopIndex == $dayOfWeek) : ?>
-                        <td><?= jdate("w l", $startLoopTime->getTimestamp()) ?></td>
+                        <td><?= jdate("d F Y", $startLoopTime->getTimestamp()) ?></td>
                         <?php $startLoopTime->modify('+1 days'); ?>
                     <?php else: ?>
                     <td>___</td>
