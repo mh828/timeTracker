@@ -48,7 +48,7 @@ abstract class BaseView extends PagingQuery implements Iterator
         return isset($this->rows[$this->index]);
     }
 
-    public function rewind(): voidf
+    public function rewind(): void
     {
         $this->index = 0;
     }
