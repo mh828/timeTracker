@@ -28,27 +28,27 @@ abstract class BaseView extends PagingQuery implements Iterator
 
     public abstract function do_query();
 
-    public function current()
+    public function current(): mixed
     {
         return $this->rows[$this->index];
     }
 
-    public function next()
+    public function next(): void
     {
         $this->index += 1;
     }
 
-    public function key()
+    public function key(): mixed
     {
         return $this->index;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->rows[$this->index]);
     }
 
-    public function rewind()
+    public function rewind(): voidf
     {
         $this->index = 0;
     }
