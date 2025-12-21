@@ -249,5 +249,48 @@ $dont_show_day_column = !empty($_POST['dont_show_day_column']);
                 </tbody>
             </table>
         </div>
+        <div class="mt-3 calendar">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>شنبه</th>
+                    <th>یک شنبه</th>
+                    <th>دو شنبه</th>
+                    <th>سه شنبه</th>
+                    <th>چهار شنبه</th>
+                    <th>پنجشنبه</th>
+                    <th>جمعه</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                $startLoopTime = new DateTime();
+                $startLoopTime->setTimestamp($start_timestamp);
+                $loopIndex = 0;
+                ?>
+                <?php while ($startLoopTime->getTimestamp() <= $end_timestamp): ?>
+                    <?php
+                    $dayOfWeek = jdate('w', $startLoopTime->getTimestamp(), tr_num: 'en');
+                    ?>
+                    <?php if ($loopIndex === 0): ?>
+                        <tr>
+                    <?php endif; ?>
+                    <?php if ($loopIndex == $dayOfWeek) : ?>
+                        <td><?= jdate("w l", $startLoopTime->getTimestamp()) ?></td>
+                        <?php $startLoopTime->modify('+1 days'); ?>
+                    <?php else: ?>
+                    <td>___</td>
+                    <?php endif; ?>
+
+                    <?php if ($loopIndex === 6): ?>
+                        </tr>
+                    <?php endif; ?>
+                    <?php
+                    $loopIndex = $loopIndex >= 6 ? 0 : $loopIndex + 1;
+                    ?>
+                <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
