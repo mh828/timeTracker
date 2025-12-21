@@ -252,8 +252,11 @@ $allResult = [];
                 </tbody>
             </table>
         </div>
-        <div class="mt-3 calendar">
-            <table class="table text-center table-bordered table-striped table-hover">
+        <div class="mt-5 calendar">
+            <div class="h2 text-center">
+                تقویم کاری
+            </div>
+            <table class="table mt-3 text-center table-bordered table-striped table-hover">
                 <thead>
                 <tr>
                     <th>شنبه</th>
@@ -289,7 +292,7 @@ $allResult = [];
                                 </div>
                             </td>
                         <?php else: ?>
-                            <td>---</td>
+                            <td class="bg-danger">---</td>
                         <?php endif; ?>
                         <?php $startLoopTime->modify('+1 days'); ?>
                     <?php else: ?>
