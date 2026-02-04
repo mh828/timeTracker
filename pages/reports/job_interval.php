@@ -11,21 +11,21 @@ function body()
     $pdo = get_pdo();
 
     $date_time_formats = [
-        "(l) d F Y",
-        "l d F Y",
-        "D d F Y",
-        "l d F",
-        "D d F",
-        "Y-m-d",
-        "l Y-m-d",
-        "D Y-m-d",
-        "m-d",
-        "Y/m/d",
-        "m/d",
-        "l Y/m/d",
-        "D Y/m/d",
-        "l m/d",
-        "D m/d"
+            "(l) d F Y",
+            "l d F Y",
+            "D d F Y",
+            "l d F",
+            "D d F",
+            "Y-m-d",
+            "l Y-m-d",
+            "D Y-m-d",
+            "m-d",
+            "Y/m/d",
+            "m/d",
+            "l Y/m/d",
+            "D Y/m/d",
+            "l m/d",
+            "D m/d"
     ];
     $date_time_format = $date_time_formats[0];
 
@@ -74,150 +74,159 @@ function body()
         $sum = $sum->fetchColumn(0);
 
         $dont_show_day_column = !empty($_POST['dont_show_day_column']);
+        $separate_dates = !empty($_POST['separate-dates']);
 
         ?>
         <div class="container">
-           <div class="d-print-none">
-               <div class="mb-3 border-bottom border-light container py-2">
-                   <span class="mr-1">شغل انتخابی:</span>
-                   <span class="font-weight-bolder"><?php echo $job->title; ?></span>
+            <div class="d-print-none">
+                <div class="mb-3 border-bottom border-light container py-2">
+                    <span class="mr-1">شغل انتخابی:</span>
+                    <span class="font-weight-bolder"><?php echo $job->title; ?></span>
 
-                   <span class="mx-2">
+                    <span class="mx-2">
                     <a href="<?php echo BASE_URL . "/reports/job_interval"; ?>" class="btn btn-primary">
                         انتخاب شغل دیگر
                     </a>
                 </span>
-               </div>
+                </div>
 
-               <form method="post">
-                   <div class="form-row">
-                       <div class="form-group col-md">
-                           <label class="sr-only">از تاریخ</label>
-                           <div class="form-row">
-                               <div class="form-group col-sm">
-                                   <label>روز شروع</label>
-                                   <select class="form-control" name="start_day">
-                                       <?php for ($i = 1; $i <= 31; $i++): ?>
-                                           <option value="<?php echo $i; ?>" <?php echo $start_day == $i ? 'selected="selected"' : '' ?>>
-                                               <?php echo $i; ?>
-                                           </option>
-                                       <?php endfor; ?>
-                                   </select>
-                               </div>
+                <form method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md">
+                            <label class="sr-only">از تاریخ</label>
+                            <div class="form-row">
+                                <div class="form-group col-sm">
+                                    <label>روز شروع</label>
+                                    <select class="form-control" name="start_day">
+                                        <?php for ($i = 1; $i <= 31; $i++): ?>
+                                            <option value="<?php echo $i; ?>" <?php echo $start_day == $i ? 'selected="selected"' : '' ?>>
+                                                <?php echo $i; ?>
+                                            </option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
 
-                               <div class="form-group col-sm">
-                                   <label>ماه شروع</label>
-                                   <select class="form-control" name="start_month">
-                                       <?php for ($i = 1; $i <= 12; $i++): ?>
-                                           <option value="<?php echo $i; ?>" <?php echo $start_month == $i ? 'selected="selected"' : '' ?>>
-                                               <?php echo $i; ?>
-                                           </option>
-                                       <?php endfor; ?>
-                                   </select>
-                               </div>
+                                <div class="form-group col-sm">
+                                    <label>ماه شروع</label>
+                                    <select class="form-control" name="start_month">
+                                        <?php for ($i = 1; $i <= 12; $i++): ?>
+                                            <option value="<?php echo $i; ?>" <?php echo $start_month == $i ? 'selected="selected"' : '' ?>>
+                                                <?php echo $i; ?>
+                                            </option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
 
-                               <div class="form-group col-sm">
-                                   <label>سال شروع</label>
-                                   <input type="tel" pattern="[0-9]+" name="start_year" class="form-control"
-                                          value="<?php echo $start_year ?>"/>
-                               </div>
+                                <div class="form-group col-sm">
+                                    <label>سال شروع</label>
+                                    <input type="tel" pattern="[0-9]+" name="start_year" class="form-control"
+                                           value="<?php echo $start_year ?>"/>
+                                </div>
 
-                           </div>
-                       </div>
+                            </div>
+                        </div>
 
-                       <div class="form-group col-md">
-                           <label class="sr-only">تا تاریخ</label>
-                           <div class="form-row">
-                               <div class="form-group col-sm">
-                                   <label>روز پایان</label>
-                                   <select class="form-control" name="end_day">
-                                       <?php for ($i = 1; $i <= 31; $i++): ?>
-                                           <option value="<?php echo $i; ?>" <?php echo $end_day == $i ? 'selected="selected"' : '' ?>>
-                                               <?php echo $i; ?>
-                                           </option>
-                                       <?php endfor; ?>
-                                   </select>
-                               </div>
+                        <div class="form-group col-md">
+                            <label class="sr-only">تا تاریخ</label>
+                            <div class="form-row">
+                                <div class="form-group col-sm">
+                                    <label>روز پایان</label>
+                                    <select class="form-control" name="end_day">
+                                        <?php for ($i = 1; $i <= 31; $i++): ?>
+                                            <option value="<?php echo $i; ?>" <?php echo $end_day == $i ? 'selected="selected"' : '' ?>>
+                                                <?php echo $i; ?>
+                                            </option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
 
-                               <div class="form-group col-sm">
-                                   <label>ماه پایان</label>
-                                   <select class="form-control" name="end_month">
-                                       <?php for ($i = 1; $i <= 12; $i++): ?>
-                                           <option value="<?php echo $i; ?>" <?php echo $end_month == $i ? 'selected="selected"' : '' ?>>
-                                               <?php echo $i; ?>
-                                           </option>
-                                       <?php endfor; ?>
-                                   </select>
-                               </div>
+                                <div class="form-group col-sm">
+                                    <label>ماه پایان</label>
+                                    <select class="form-control" name="end_month">
+                                        <?php for ($i = 1; $i <= 12; $i++): ?>
+                                            <option value="<?php echo $i; ?>" <?php echo $end_month == $i ? 'selected="selected"' : '' ?>>
+                                                <?php echo $i; ?>
+                                            </option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
 
-                               <div class="form-group col-sm">
-                                   <label>سال پایان</label>
-                                   <input type="tel" pattern="[0-9]+" name="end_year" class="form-control"
-                                          value="<?php echo $end_year ?>"/>
-                               </div>
+                                <div class="form-group col-sm">
+                                    <label>سال پایان</label>
+                                    <input type="tel" pattern="[0-9]+" name="end_year" class="form-control"
+                                           value="<?php echo $end_year ?>"/>
+                                </div>
 
-                           </div>
-                       </div>
-                   </div>
+                            </div>
+                        </div>
+                    </div>
 
-                   <div class="form-row">
-                       <div class="form-group col-md">
-                           <div class="form-check-inline">
-                               <input type="radio" name="order"
-                                      value="ASC" <?php echo $order === 'ASC' ? 'checked' : ''; ?>
-                                      class="form-check-input" id="order-checkbox-asc">
-                               <label for="order-checkbox-asc" class="form-check-label">
-                                   صعودی
-                               </label>
-                           </div>
-                           <div class="form-check-inline">
-                               <input type="radio" name="order"
-                                      value="DESC" <?php echo $order === 'DESC' ? 'checked' : ''; ?>
-                                      class="form-check-input" id="order-checkbox-asc">
-                               <label for="order-checkbox-asc" class="form-check-label">
-                                   نزولی
-                               </label>
-                           </div>
-                       </div>
+                    <div class="form-row">
+                        <div class="form-group col-md">
+                            <div class="form-check-inline">
+                                <input type="radio" name="order"
+                                       value="ASC" <?php echo $order === 'ASC' ? 'checked' : ''; ?>
+                                       class="form-check-input" id="order-checkbox-asc">
+                                <label for="order-checkbox-asc" class="form-check-label">
+                                    صعودی
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <input type="radio" name="order"
+                                       value="DESC" <?php echo $order === 'DESC' ? 'checked' : ''; ?>
+                                       class="form-check-input" id="order-checkbox-asc">
+                                <label for="order-checkbox-asc" class="form-check-label">
+                                    نزولی
+                                </label>
+                            </div>
+                        </div>
 
-                       <div class="form-group col-md">
-                           <label data-target="#date-format-list" data-toggle="collapse" style="cursor: pointer">
-                               فرمت نمایش تاریخ
-                               <span class="ml-2">&check;</span>
-                           </label>
+                        <div class="form-group col-md">
+                            <label data-target="#date-format-list" data-toggle="collapse" style="cursor: pointer">
+                                فرمت نمایش تاریخ
+                                <span class="ml-2">&check;</span>
+                            </label>
 
-                           <div class="collapse" id="date-format-list">
-                               <?php foreach ($date_time_formats as $key => $format) : ?>
-                                   <div class="form-check">
-                                       <input id="date_time_format_<?php echo $key ?>" type="radio" name="date_time_format"
-                                           <?php echo $format === $date_time_format ? 'checked' : '' ?>
-                                              value="<?php echo $format ?>"
-                                              class="form-check-input"/>
-                                       <label class="form-check-label" for="date_time_format_<?php echo $key ?>">
-                                           <?php echo jdate($format, '', '', '', 'en') ?>
-                                       </label>
-                                   </div>
-                               <?php endforeach; ?>
-                           </div>
-                       </div>
+                            <div class="collapse" id="date-format-list">
+                                <?php foreach ($date_time_formats as $key => $format) : ?>
+                                    <div class="form-check">
+                                        <input id="date_time_format_<?php echo $key ?>" type="radio" name="date_time_format"
+                                                <?php echo $format === $date_time_format ? 'checked' : '' ?>
+                                               value="<?php echo $format ?>"
+                                               class="form-check-input"/>
+                                        <label class="form-check-label" for="date_time_format_<?php echo $key ?>">
+                                            <?php echo jdate($format, '', '', '', 'en') ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
 
-                       <div class="form-check">
-                           <input type="checkbox" name="dont_show_day_column" value="1"
-                               <?php echo $dont_show_day_column ? 'checked' : ''; ?>
-                                  class="form-check-input" id="show-day-column-checkbox">
-                           <label for="show-day-column-checkbox" class="form-check-label">
-                               عدم نمایش ستون روز
-                           </label>
-                       </div>
-                   </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="dont_show_day_column" value="1"
+                                    <?php echo $dont_show_day_column ? 'checked' : ''; ?>
+                                   class="form-check-input" id="show-day-column-checkbox">
+                            <label for="show-day-column-checkbox" class="form-check-label">
+                                عدم نمایش ستون روز
+                            </label>
+                        </div>
+                        <label class="form-check ml-3">
+                            <input type="checkbox" name="separate-dates" value="1"
+                                    <?php echo $separate_dates ? 'checked' : ''; ?>
+                                   class="form-check-input">
+                            <div class="form-check-label">
+                                نمایش جداگانه تاریخ
+                            </div>
+                        </label>
+                    </div>
 
-                   <div>
-                       <input type="submit" class="btn btn-primary" value="دریافت گزارش"/>
-                   </div>
-               </form>
+                    <div>
+                        <input type="submit" class="btn btn-primary" value="دریافت گزارش"/>
+                    </div>
+                </form>
 
-               <hr/>
-           </div>
+                <hr/>
+            </div>
 
             <div>
                 <table>
@@ -255,8 +264,13 @@ function body()
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
-                            <?php if (!$dont_show_day_column): ?>
-                                <th>روز</th>
+                            <?php if ($separate_dates): ?>
+                                <th>روز هفته</th>
+                                <th>روز ماه</th>
+                                <th>ماه</th>
+                                <th>سال</th>
+                            <?php elseif (!$dont_show_day_column): ?>
+                                <th>تاریخ</th>
                             <?php endif; ?>
                             <th>زمان شروع</th>
                             <th>زمان پایان</th>
@@ -268,7 +282,12 @@ function body()
                         <tbody>
                         <?php while ($r = $query->fetchObject()) : ?>
                             <tr>
-                                <?php if (!$dont_show_day_column) : ?>
+                                <?php if ($separate_dates): ?>
+                                    <td><?php echo jdate("l", $r->start) ?></td>
+                                    <td><?php echo jdate("d", $r->start) ?></td>
+                                    <td><?php echo jdate("F", $r->start) ?></td>
+                                    <td><?php echo jdate("Y", $r->start) ?></td>
+                                <?php elseif (!$dont_show_day_column) : ?>
                                     <td>
                                         <?php echo jdate($date_time_format, $r->start) ?>
                                     </td>
