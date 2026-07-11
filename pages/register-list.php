@@ -25,33 +25,42 @@ function body()
     $on_working = $on_working->fetchAll(PDO::FETCH_OBJ);
 
 
-    if (isset($_POST['end_job'])) {
-        $_POST = input_validate($_POST);
-        $on_working->end = time();
-        $on_working->duration = calculate_time($on_working->start, $on_working->end);
-        //$on_working->description = !empty($_POST['description']) ? $_POST['description'] : '';
+    if(!empty($_POST['start'] ?? null) && !empty($_POST['job_id'] ?? null)) {
+        $query = $pdo->prepare('SELECT * FROM `time_log` WHERE start = :start AND job_id = :job_id');
+        $query->bindValue(":start", $_POST['start']);
+        $query->bindValue(":job_id", $_POST['job_id']);
+        $query->execute();
+        if($selectedJob = $query->fetchObject()){
+            if (isset($_POST['end_job'])) {
+                $_POST = input_validate($_POST);
+                $selectedJob->end = time();
+                $selectedJob->duration = calculate_time($selectedJob->start, $selectedJob->end);
+                //$selectedJob->description = !empty($_POST['description']) ? $_POST['description'] : '';
 
-        $stm = $pdo->prepare("UPDATE time_log  SET `end` = :end, `duration` = :duration, " .
-                "`description` = :description " .
-                "  WHERE start = :start AND job_id = :job_id;");
-        $stm->bindValue(":start", $on_working->start);
-        $stm->bindValue(":end", $on_working->end);
-        $stm->bindValue(":duration", $on_working->duration);
-        $stm->bindValue(":description", trim($on_working->description . PHP_EOL . $_POST['description']));
-        $stm->bindValue(":job_id", $on_working->job_id);
+                $stm = $pdo->prepare("UPDATE time_log  SET `end` = :end, `duration` = :duration, " .
+                        "`description` = :description " .
+                        "  WHERE start = :start AND job_id = :job_id;");
+                $stm->bindValue(":start", $selectedJob->start);
+                $stm->bindValue(":end", $selectedJob->end);
+                $stm->bindValue(":duration", $selectedJob->duration);
+                $stm->bindValue(":description", trim($selectedJob->description . PHP_EOL . $_POST['description']));
+                $stm->bindValue(":job_id", $selectedJob->job_id);
 
-        if ($stm->execute())
-            header("location: " . $_SERVER['REQUEST_URI']);
-    } else if (isset($_POST['append_description'])) {
-        $_POST = input_validate($_POST);
-        if (!empty($_POST['description'])) {
-            $query = $pdo->prepare("UPDATE time_log SET description  =  :description WHERE start = :start AND job_id = :job_id");
-            $query->bindValue(':description', trim($on_working->description . PHP_EOL . $_POST['description']));
-            $query->bindValue(":start", $on_working->start);;
-            $query->bindValue(":job_id", $on_working->job_id);
-            if ($query->execute())
-                header("location: " . $_SERVER['REQUEST_URI']);
+                if ($stm->execute())
+                    header("location: " . $_SERVER['REQUEST_URI']);
+            } else if (isset($_POST['append_description'])) {
+                $_POST = input_validate($_POST);
+                if (!empty($_POST['description'])) {
+                    $query = $pdo->prepare("UPDATE time_log SET description  =  :description WHERE start = :start AND job_id = :job_id");
+                    $query->bindValue(':description', trim($selectedJob->description . PHP_EOL . $_POST['description']));
+                    $query->bindValue(":start", $selectedJob->start);;
+                    $query->bindValue(":job_id", $selectedJob->job_id);
+                    if ($query->execute())
+                        header("location: " . $_SERVER['REQUEST_URI']);
+                }
+            }
         }
+
     }
 
     $list_of_jobs = array();
