@@ -159,14 +159,14 @@ function body()
                 </div>
 
                 <div class="card-footer">
+                    <input type="submit" name="end_job" value="پایان دادن به کار" class="btn btn-primary"/>
+                    <input type="submit" name="append_description" value="اضافه کردن توضیحات" class="btn btn-info"/>
                     <?php if ($ind !== $mainProcessKey): ?>
-                        <label class="form-check d-block">
+                        <label class="form-check d-block mt-3">
                             <input type="checkbox" name="non-append-to-base" class="form-check-input"/>
                             <div class="form-check-label">عدم اضافه کردن توضیحات به فعالیت اصلی</div>
                         </label>
                     <?php endif; ?>
-                    <input type="submit" name="end_job" value="پایان دادن به کار" class="btn btn-primary"/>
-                    <input type="submit" name="append_description" value="اضافه کردن توضیحات" class="btn btn-info"/>
                 </div>
             </form>
         <?php endforeach; ?>
