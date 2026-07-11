@@ -65,7 +65,7 @@ function body()
                 $_POST = input_validate($_POST);
                 if (!empty($_POST['description'])) {
                     $dbHandler->updateDescription($pdo, $selectedJob, $_POST['description'] ?? '');
-                    if (!($_POST['non-append-to-base']) && $on_working[$mainProcessKey] !== $selectedJob)
+                    if (!($_POST['non-append-to-base']) && $on_working[$mainProcessKey]->job_id !== $selectedJob->job_id)
                         $dbHandler->updateDescription($pdo, $on_working[$mainProcessKey], $_POST['description'], "{$selectedJob->title}: ");
 
                     header("location: " . $_SERVER['REQUEST_URI']);
