@@ -26,8 +26,7 @@ function body()
             $query->bindValue(':description', trim($selectedJob->description . PHP_EOL . $description));
             $query->bindValue(":start", $selectedJob->start);;
             $query->bindValue(":job_id", $selectedJob->job_id);
-            if ($query->execute())
-                header("location: " . $_SERVER['REQUEST_URI']);
+            return $query->execute();
         }
     };
 
@@ -57,15 +56,18 @@ function body()
                 $stm->bindValue(":duration", $selectedJob->duration);
                 $stm->bindValue(":description", trim($selectedJob->description . PHP_EOL . $_POST['description']));
                 $stm->bindValue(":job_id", $selectedJob->job_id);
-
-                if ($stm->execute())
-                    header("location: " . $_SERVER['REQUEST_URI']);
+                $stm->execute();
+                if (!($_POST['non-append-to-base']) && $on_working[$mainProcessKey] !== $selectedJob)
+                    $dbHandler->updateDescription($pdo, $on_working[$mainProcessKey], $_POST['description']);
+                header("location: " . $_SERVER['REQUEST_URI']);
             } else if (isset($_POST['append_description'])) {
                 $_POST = input_validate($_POST);
                 if (!empty($_POST['description'])) {
                     $dbHandler->updateDescription($pdo, $selectedJob, $_POST['description'] ?? '');
                     if (!($_POST['non-append-to-base']) && $on_working[$mainProcessKey] !== $selectedJob)
                         $dbHandler->updateDescription($pdo, $on_working[$mainProcessKey], $_POST['description']);
+
+                    header("location: " . $_SERVER['REQUEST_URI']);
                 }
             }
         }
@@ -118,8 +120,8 @@ function body()
             <?php foreach ($on_working as $ind => $item): ?>
             <!--@formatter:on-->
             <form method="post" class="card mb-3" <?= $ind === $mainProcessKey ? 'style="background: #00ffff12"' : '' ?> >
-                <input type="text" name="start" value="<?= $item->start ?>">
-                <input type="text" name="job_id" value="<?= $item->job_id ?>">
+                <input type="hidden" name="start" value="<?= $item->start ?>">
+                <input type="hidden" name="job_id" value="<?= $item->job_id ?>">
                 <h4 class="card-header">
                     پایان دادن به کار در حال اجرا
                     <?= $ind === $mainProcessKey ? '(فعالیت اصلی)' : '' ?>
