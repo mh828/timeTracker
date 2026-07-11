@@ -19,6 +19,17 @@ function body()
     $pdo = get_pdo();
 
     $errors = array();
+    $dbHandler = new class {
+        public function updateDescription($pdo, $selectedJob, $description)
+        {
+            $query = $pdo->prepare("UPDATE time_log SET description  =  :description WHERE start = :start AND job_id = :job_id");
+            $query->bindValue(':description', trim($selectedJob->description . PHP_EOL . $description));
+            $query->bindValue(":start", $selectedJob->start);;
+            $query->bindValue(":job_id", $selectedJob->job_id);
+            if ($query->execute())
+                header("location: " . $_SERVER['REQUEST_URI']);
+        }
+    };
 
 //get on-working job
     $on_working = $pdo->query("SELECT `time_log`.*,`job`.`title` FROM `time_log` LEFT JOIN `job` ON `job`.`job_id` = `time_log`.`job_id` WHERE IFNULL(`end`,'') = '' ORDER BY `start` DESC");
@@ -52,12 +63,9 @@ function body()
             } else if (isset($_POST['append_description'])) {
                 $_POST = input_validate($_POST);
                 if (!empty($_POST['description'])) {
-                    $query = $pdo->prepare("UPDATE time_log SET description  =  :description WHERE start = :start AND job_id = :job_id");
-                    $query->bindValue(':description', trim($selectedJob->description . PHP_EOL . $_POST['description']));
-                    $query->bindValue(":start", $selectedJob->start);;
-                    $query->bindValue(":job_id", $selectedJob->job_id);
-                    if ($query->execute())
-                        header("location: " . $_SERVER['REQUEST_URI']);
+                    $dbHandler->updateDescription($pdo, $selectedJob, $_POST['description'] ?? '');
+                    if (!($_POST['non-append-to-base']) && $on_working[$mainProcessKey] !== $selectedJob)
+                        $dbHandler->updateDescription($pdo, $on_working[$mainProcessKey], $_POST['description']);
                 }
             }
         }
