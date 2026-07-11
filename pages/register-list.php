@@ -20,10 +20,10 @@ function body()
 
     $errors = array();
     $dbHandler = new class {
-        public function updateDescription($pdo, $selectedJob, $description)
+        public function updateDescription($pdo, $selectedJob, $description, $descriptionPrefix = '')
         {
             $query = $pdo->prepare("UPDATE time_log SET description  =  :description WHERE start = :start AND job_id = :job_id");
-            $query->bindValue(':description', trim($selectedJob->description . PHP_EOL . $description));
+            $query->bindValue(':description', trim($selectedJob->description . PHP_EOL . $descriptionPrefix . $description));
             $query->bindValue(":start", $selectedJob->start);;
             $query->bindValue(":job_id", $selectedJob->job_id);
             return $query->execute();
@@ -37,7 +37,7 @@ function body()
 
 
     if (!empty($_POST['start'] ?? null) && !empty($_POST['job_id'] ?? null)) {
-        $query = $pdo->prepare('SELECT * FROM `time_log` WHERE start = :start AND job_id = :job_id');
+        $query = $pdo->prepare('SELECT `time_log`.*,`job`.`title` FROM `time_log` LEFT JOIN `job` ON `job`.`job_id` = `time_log`.`job_id` WHERE time_log.start = :start AND time_log.job_id = :job_id');
         $query->bindValue(":start", $_POST['start']);
         $query->bindValue(":job_id", $_POST['job_id']);
         $query->execute();
@@ -58,14 +58,14 @@ function body()
                 $stm->bindValue(":job_id", $selectedJob->job_id);
                 $stm->execute();
                 if (!($_POST['non-append-to-base']) && $on_working[$mainProcessKey] !== $selectedJob)
-                    $dbHandler->updateDescription($pdo, $on_working[$mainProcessKey], $_POST['description']);
+                    $dbHandler->updateDescription($pdo, $on_working[$mainProcessKey], $_POST['description'], "{$selectedJob->title}: ");
                 header("location: " . $_SERVER['REQUEST_URI']);
             } else if (isset($_POST['append_description'])) {
                 $_POST = input_validate($_POST);
                 if (!empty($_POST['description'])) {
                     $dbHandler->updateDescription($pdo, $selectedJob, $_POST['description'] ?? '');
                     if (!($_POST['non-append-to-base']) && $on_working[$mainProcessKey] !== $selectedJob)
-                        $dbHandler->updateDescription($pdo, $on_working[$mainProcessKey], $_POST['description']);
+                        $dbHandler->updateDescription($pdo, $on_working[$mainProcessKey], $_POST['description'], "{$selectedJob->title}: ");
 
                     header("location: " . $_SERVER['REQUEST_URI']);
                 }
