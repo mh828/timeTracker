@@ -23,14 +23,15 @@ function body()
 //get on-working job
     $on_working = $pdo->query("SELECT `time_log`.*,`job`.`title` FROM `time_log` LEFT JOIN `job` ON `job`.`job_id` = `time_log`.`job_id` WHERE IFNULL(`end`,'') = '' ORDER BY `start` DESC");
     $on_working = $on_working->fetchAll(PDO::FETCH_OBJ);
+    $mainProcessKey = array_key_last($on_working);
 
 
-    if(!empty($_POST['start'] ?? null) && !empty($_POST['job_id'] ?? null)) {
+    if (!empty($_POST['start'] ?? null) && !empty($_POST['job_id'] ?? null)) {
         $query = $pdo->prepare('SELECT * FROM `time_log` WHERE start = :start AND job_id = :job_id');
         $query->bindValue(":start", $_POST['start']);
         $query->bindValue(":job_id", $_POST['job_id']);
         $query->execute();
-        if($selectedJob = $query->fetchObject()){
+        if ($selectedJob = $query->fetchObject()) {
             if (isset($_POST['end_job'])) {
                 $_POST = input_validate($_POST);
                 $selectedJob->end = time();
@@ -60,7 +61,6 @@ function body()
                 }
             }
         }
-
     }
 
     $list_of_jobs = array();
@@ -106,49 +106,60 @@ function body()
 
     <div class="container mt-2">
         <?php if (!empty($on_working)): ?>
-            <?php foreach ($on_working as $item): ?>
-                <form method="post" class="card mb-3">
-                    <input type="text" name="start" value="<?=$item->start ?>">
-                    <input type="text" name="job_id" value="<?=$item->job_id ?>">
-                    <h4 class="card-header">پایان دادن به کار در حال اجرا</h4>
+            <!--@formatter:off-->
+            <?php foreach ($on_working as $ind => $item): ?>
+            <!--@formatter:on-->
+            <form method="post" class="card mb-3" <?= $ind === $mainProcessKey ? 'style="background: #00ffff12"' : '' ?> >
+                <input type="text" name="start" value="<?= $item->start ?>">
+                <input type="text" name="job_id" value="<?= $item->job_id ?>">
+                <h4 class="card-header">
+                    پایان دادن به کار در حال اجرا
+                    <?= $ind === $mainProcessKey ? '(فعالیت اصلی)' : '' ?>
+                </h4>
 
-                    <div class="card-body">
-                        <table class="table">
-                            <tr>
-                                <th>عنوان کار</th>
-                                <td><?php echo $item->title ?></td>
-                            </tr>
-                            <tr>
-                                <th>زمان شروع</th>
-                                <td><?php echo jdate("l d F Y ساعت H:i:s", $item->start, '', '', 'en'); ?></td>
-                            </tr>
-                            <tr>
-                                <th>زمان سپری شده</th>
-                                <td>
-                                    <span class="time_gone" data-start="<?= $item->start ?>"></span>
-                                </td>
-                            </tr>
-                        </table>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <th>فعالیت</th>
+                            <td><?php echo $item->title ?></td>
+                        </tr>
+                        <tr>
+                            <th>زمان شروع</th>
+                            <td><?php echo jdate("l d F Y ساعت H:i:s", $item->start, '', '', 'en'); ?></td>
+                        </tr>
+                        <tr>
+                            <th>زمان سپری شده</th>
+                            <td>
+                                <span class="time_gone" data-start="<?= $item->start ?>"></span>
+                            </td>
+                        </tr>
+                    </table>
 
-                        <div class="form-group">
-                            <label>توضیحات</label>
+                    <div class="form-group">
+                        <label>توضیحات</label>
 
-                            <?php if (!empty($item->description)): ?>
-                                <div class="border p-2 rounded my-3">
-                                    <div style="white-space: pre" class="my-2"><?php echo $item->description; ?></div>
-                                </div>
-                            <?php endif; ?>
+                        <?php if (!empty($item->description)): ?>
+                            <div class="border p-2 rounded my-3">
+                                <div style="white-space: pre" class="my-2"><?php echo $item->description; ?></div>
+                            </div>
+                        <?php endif; ?>
 
-                            <textarea placeholder="توضیحات" name="description" class="form-control"></textarea>
-                        </div>
+                        <textarea placeholder="توضیحات" name="description" class="form-control"></textarea>
                     </div>
+                </div>
 
-                    <div class="card-footer">
-                        <input type="submit" name="end_job" value="پایان دادن به کار" class="btn btn-primary"/>
-                        <input type="submit" name="append_description" value="اضافه کردن توضیحات" class="btn btn-info"/>
-                    </div>
-                </form>
-            <?php endforeach; ?>
+                <div class="card-footer">
+                    <?php if ($ind !== $mainProcessKey): ?>
+                        <label class="form-check d-block">
+                            <input type="checkbox" name="non-append-to-base" class="form-check-input"/>
+                            <div class="form-check-label">عدم اضافه کردن توضیحات به فعالیت اصلی</div>
+                        </label>
+                    <?php endif; ?>
+                    <input type="submit" name="end_job" value="پایان دادن به کار" class="btn btn-primary"/>
+                    <input type="submit" name="append_description" value="اضافه کردن توضیحات" class="btn btn-info"/>
+                </div>
+            </form>
+        <?php endforeach; ?>
             <script>
                 setInterval(function () {
                     document.querySelectorAll('.time_gone').forEach(i => {
