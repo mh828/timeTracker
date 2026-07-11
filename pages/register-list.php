@@ -22,6 +22,7 @@ function body()
     $dbHandler = new class {
         public function updateDescription($pdo, $selectedJob, $description, $descriptionPrefix = '')
         {
+            if (empty($description)) return false;
             $query = $pdo->prepare("UPDATE time_log SET description  =  :description WHERE start = :start AND job_id = :job_id");
             $query->bindValue(':description', trim($selectedJob->description . PHP_EOL . $descriptionPrefix . $description));
             $query->bindValue(":start", $selectedJob->start);;
